@@ -1,0 +1,21 @@
+package com.example.demo.repositories;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import com.example.demo.entities.Product;
+
+@Repository
+public interface ProductRepository extends JpaRepository<Product, Integer> 
+{
+	@Modifying
+	@Query("Update Product set cat_id=:cat_id,brand_id,description")
+	public int addProduct(int id);
+	
+	
+	@Modifying
+	@Query("update Product set picture = :file where exp_id = :id")
+	public int uploadPicture(int id,byte[] file);
+}

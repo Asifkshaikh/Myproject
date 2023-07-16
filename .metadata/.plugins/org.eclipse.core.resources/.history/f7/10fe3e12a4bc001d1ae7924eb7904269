@@ -1,0 +1,16 @@
+package com.example.demo.repositories;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import com.example.demo.entities.Expert;
+import com.example.demo.entities.Prebuilt_pc;
+
+@Repository
+public class Prebuilt_pcRepository 
+{
+	@Query("select p from Prebuilt_pc p where exp_id = :e")
+	public List<Prebuilt_pc> getPrebuilt_pcByExperts(Expert e);
+}

@@ -1,0 +1,73 @@
+package com.example.demo.controllers;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.demo.entities.AddOffer;
+import com.example.demo.entities.Brand;
+import com.example.demo.entities.Category;
+import com.example.demo.entities.Distributor;
+import com.example.demo.entities.DistributorReg;
+import com.example.demo.entities.Login;
+import com.example.demo.entities.Offer;
+import com.example.demo.entities.Product;
+import com.example.demo.entities.Role;
+import com.example.demo.services.DistributorService;
+import com.example.demo.services.LoginService;
+import com.example.demo.services.OfferService;
+import com.example.demo.services.ProductService;
+import com.example.demo.services.RoleService;
+
+@CrossOrigin(origins = "http://localhost:3000")
+@RestController
+public class DistributorController {
+	
+	@Autowired
+	DistributorService dservice;
+	
+	@Autowired
+	LoginService lservice;
+	
+	@Autowired
+	RoleService rservice;
+	
+	@Autowired
+	ProductService pservice;
+	
+	@Autowired
+	OfferService oservice;
+	
+	
+	@GetMapping("/getDistributor")
+	public Distributor getDistributor(@RequestParam("loginid") int loginid)
+	{
+		Login l = lservice.getById(loginid);
+		return dservice.getDistributor(l); 
+	}
+	
+	@PostMapping("/regDistributor")
+	public Distributor regDistributor(@RequestBody DistributorReg dr)
+	{
+		Role r= rservice.getRole(5);
+		Login l = new Login(dr.getEmail(),dr.getPwd(),r,false);
+		Login saved= lservice.save(l);
+		
+		Distributor d=new Distributor(dr.getFname(),dr.getLname(),dr.getMobile(),saved);
+		return dservice.saveDistributor(d);
+	}
+	
+	
+	@PostMapping("/addOffers")
+	public Distributor addOffers(@RequestBody AddOffer ao)
+	{
+		Product prod = pservice.getById(ao.getProd_id());
+		Offer offer=new Offer();
+		return oservice.saveOffer(prod);
+	}
+
+}

@@ -1,0 +1,57 @@
+package com.example.demo.services;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.entities.Product;
+import com.example.demo.repositories.ProductRepository;
+
+@Service
+public class ProductService 
+{
+	@Autowired
+	ProductRepository prepo;
+	
+	
+	public Product saveProduct(Product p)
+	{
+		return prepo.save(p);
+	}
+	
+	public List<Product> getAllMonitors()
+	{
+		return prepo.getAllMonitors();
+	}
+	
+	public List<Product> getAllKeyboards()
+	{
+		return prepo.getAllKeyboards();
+	}
+	
+	public List<Product> getAllCabinets()
+	{
+		return prepo.getAllCabinets();
+	}
+	
+	public List<Product> getAllMotherboards()
+	{
+		return prepo.getAllMotherboards();
+	}
+	
+	
+	
+	public boolean upload(int id, byte[] photo)
+	{
+		if(prepo.uploadPicture(id, photo)==1)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+}
